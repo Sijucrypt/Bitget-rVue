@@ -17,7 +17,7 @@ export function ProblemSection() {
           <p className="text-sm leading-relaxed text-muted">
             Traditional equity markets shut down every evening, weekend, and holiday.
             Meanwhile, global crypto traders continue buying and selling tokenized stocks on Bitget 24/7.
-            When weekend geopolitical shocks or earnings leaks occur, rTokens react immediately—creating
+            When weekend geopolitical shocks, earnings announcements, or macro events occur, rTokens react immediately—creating
             significant price divergences that conventional terminals cannot model.
           </p>
 

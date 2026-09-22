@@ -23,7 +23,6 @@ export function BoardPreview({ scan }: { scan: ScanSummary | null }) {
           </div>
 
           <div className="flex items-center gap-4 text-xs font-mono text-tertiary">
-            <span>NYSE/Nasdaq State: <strong>CLOSED</strong> (24/7 Window Active)</span>
             {scan && (
               <span>
                 Updated: {new Date(scan.generatedAt).toLocaleTimeString()}

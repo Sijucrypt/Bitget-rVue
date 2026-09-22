@@ -39,11 +39,24 @@ function sortMagnitude(row: DivergenceRow): number {
 async function runScan(): Promise<ScanSummary> {
   const startedAt = Date.now();
   const [symbols, tickers] = await Promise.all([getRTokenSymbols(), getAllTickers()]);
-  const universe: UniverseEntry[] = symbols.map((symbol: any) => ({
+  
+  let universe: UniverseEntry[] = symbols.map((symbol: any) => ({
     rToken: symbol.baseCoin,
     ticker: underlyingTicker(symbol.baseCoin),
     pairSymbol: symbol.symbol,
   }));
+
+  // Sort by USDT volume to prioritize highly traded assets and cap at 150
+  // to avoid Vercel maxDuration timeouts during equity quote fetching.
+  universe.sort((a, b) => {
+    const volA = Number.parseFloat(tickers.get(a.pairSymbol)?.usdtVolume ?? "0") || 0;
+    const volB = Number.parseFloat(tickers.get(b.pairSymbol)?.usdtVolume ?? "0") || 0;
+    return volB - volA;
+  });
+  
+  const totalUniverse = universe.length;
+  universe = universe.slice(0, 150);
+
   const uniqueTickers = Array.from(new Set(universe.map((entry) => entry.ticker)));
   const quotes = await getEquityQuotes(uniqueTickers);
   const rows = universe.map((entry) =>
@@ -60,7 +73,7 @@ async function runScan(): Promise<ScanSummary> {
   return {
     generatedAt: Date.now(),
     durationMs: Date.now() - startedAt,
-    universe: rows.length,
+    universe: totalUniverse,
     ok: rows.filter((row) => row.status === "OK").length,
     flagged: rows.filter((row) => row.flagged).length,
     missingEquityData: rows.filter((row) => row.status === "NO_EQUITY_DATA").length,
