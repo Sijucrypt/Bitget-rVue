@@ -38,17 +38,7 @@ function sortMagnitude(row: DivergenceRow): number {
 
 async function runScan(): Promise<ScanSummary> {
   const startedAt = Date.now();
-  let symbols, tickers;
-  try {
-    [symbols, tickers] = await Promise.all([getRTokenSymbols(), getAllTickers()]);
-  } catch (error) {
-    console.warn("Bitget symbol fetch failed, using fallback universe", error);
-    symbols = [
-      { baseCoin: "rTSLA", symbol: "rTSLAUSDT", quoteCoin: "USDT", status: "online" },
-      { baseCoin: "rNVDA", symbol: "rNVDAUSDT", quoteCoin: "USDT", status: "online" }
-    ] as any;
-    tickers = new Map();
-  }
+  const [symbols, tickers] = await Promise.all([getRTokenSymbols(), getAllTickers()]);
   const universe: UniverseEntry[] = symbols.map((symbol: any) => ({
     rToken: symbol.baseCoin,
     ticker: underlyingTicker(symbol.baseCoin),

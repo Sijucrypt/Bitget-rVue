@@ -34,7 +34,10 @@ export function BriefPanel({ brief, evidence, onCitationClick }: BriefPanelProps
               (signalColor[brief.signal] ?? signalColor.NO_SIGNAL)
             }
           >
-            {brief.signal}
+            {brief.signal === "NO_SIGNAL" ? "NO MATERIAL SIGNAL" :
+             brief.signal === "DIVERGENCE" ? "MATERIAL DIVERGENCE" :
+             brief.signal === "CONFIRMATION" ? "WATCH (CONFIRMATION)" :
+             brief.signal === "INSUFFICIENT_EVIDENCE" ? "INSUFFICIENT EVIDENCE" : brief.signal}
           </span>
           <span className="rounded-md border border-border bg-surface-raised px-2 py-0.5 font-mono text-[11px] text-muted">
             Confidence: {brief.confidence}

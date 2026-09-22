@@ -16,7 +16,7 @@ next-env.d.ts
 
 # local caches and pre-build research scratch data
 .cache/
-research/
+/research/
 
 # installers
 *.msi

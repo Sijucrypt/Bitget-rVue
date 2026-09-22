@@ -45,7 +45,7 @@ function Row({ row, now }: { row: DivergenceRow; now: number }) {
           <span className="font-mono font-semibold tabular-nums text-text group-hover:text-brand">{row.rToken}</span>
           <span className="ml-2 font-mono text-xs text-tertiary">{row.ticker}</span>
         </Link>
-        {row.status === "SUSPECT_MISPAIRING" ? <p className="mt-1 text-[10px] text-muted">Suspect pair</p> : null}
+        {row.status === "SUSPECT_MISPAIRING" ? <p className="mt-1 text-[10px] text-muted">Underlying mapping unverified</p> : null}
       </td>
       <td className="px-3 py-3 text-right font-mono tabular-nums text-text">{price(row.rPrice, 4)}</td>
       <td className={`px-3 py-3 text-right font-mono tabular-nums ${tone(row.rChange24hPct)}`}>{number(row.rChange24hPct, "%")}</td>
