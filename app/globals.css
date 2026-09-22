@@ -1,0 +1,413 @@
+@import "tailwindcss";
+
+/* data-theme attribute drives dark mode (matches the no-flash inline script).
+   Tokens flip via the CSS variables below, so most components need no dark:
+   variant at all - the utility references a variable whose value changes. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Map Tailwind utilities onto the existing token variables (inline, so the
+   [data-theme="light"] overrides propagate). Components use bg-surface,
+   text-muted, border-border, font-mono, etc. - never raw hex. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-tertiary: var(--tertiary);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-positive: var(--positive);
+  --color-negative: var(--negative);
+  --color-warning: var(--warning);
+  --color-brand: var(--brand);
+  --color-glass-bg: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
+  --color-scrim: var(--scrim);
+  --font-sans: var(--sans);
+  --font-mono: var(--mono);
+}
+:root {
+  color-scheme: dark;
+  --bg: #080a0a;
+  --ambient-a: rgba(94, 106, 210, 0.20);
+  --ambient-b: rgba(76, 183, 130, 0.12);
+  --surface: #121417;
+  --surface-raised: #1a1c20;
+  --glass-bg: rgba(18, 20, 23, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-highlight: rgba(255, 255, 255, 0.16);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --scrim: rgba(0, 0, 0, 0.48);
+  --border: #1f2227;
+  --text: #f7f8f8;
+  --muted: #8a8f98;
+  --tertiary: #6b7078;
+  --accent: #5e6ad2;
+  --accent-hover: #6e7ae0;
+  --accent-contrast: #ffffff;
+  --positive: #4cb782;
+  --negative: #eb5757;
+  --warning: #f0b429;
+  --brand: #00f0ff;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  /* legacy alias so the pre-port board keeps rendering; removed when the board moves in step 5 */
+  --panel: var(--surface);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f6f7f9;
+  --ambient-a: rgba(94, 106, 210, 0.12);
+  --ambient-b: rgba(76, 183, 130, 0.10);
+  --surface: #fcfcfd;
+  --surface-raised: #ffffff;
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-border: rgba(15, 18, 22, 0.10);
+  --glass-highlight: rgba(255, 255, 255, 0.85);
+  --glass-shadow: 0 8px 28px rgba(15, 18, 22, 0.10);
+  --scrim: rgba(15, 18, 22, 0.28);
+  --border: rgba(15, 18, 22, 0.10);
+  --text: #14171a;
+  --muted: #5c6470;
+  --tertiary: #8a929c;
+  --accent: #4a55c0;
+  --accent-hover: #3f49a8;
+  --accent-contrast: #ffffff;
+  --positive: #1f8a5a;
+  --negative: #c43c3c;
+  --warning: #9a6b00;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.shell {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 24px 48px;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.header h1 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.header .tagline {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.chip {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.chip strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.chip.flag strong {
+  color: var(--accent);
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.toolbar button {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.toolbar button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.toolbar .status {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.tablewrap {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  overflow: auto;
+  max-height: 72vh;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: right;
+  padding: 8px 10px;
+}
+
+thead th.left {
+  text-align: left;
+}
+
+tbody td {
+  border-bottom: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+tbody td.left {
+  text-align: left;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover td {
+  background: rgba(94, 106, 210, 0.06);
+}
+
+tr.missing td {
+  color: var(--muted);
+  opacity: 0.65;
+}
+
+.pos {
+  color: var(--positive);
+}
+
+.neg {
+  color: var(--negative);
+}
+
+.dim {
+  color: var(--muted);
+}
+
+.sym {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.state {
+  display: inline-block;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  padding: 0 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.state.REGULAR {
+  color: var(--positive);
+  border-color: rgba(76, 183, 130, 0.4);
+}
+
+.state.CLOSED {
+  color: var(--muted);
+}
+
+.state.PRE,
+.state.POST {
+  color: #d9a441;
+  border-color: rgba(217, 164, 65, 0.4);
+}
+
+.showmore {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.showmore button {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 6px 16px;
+  cursor: pointer;
+}
+
+.showmore button:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.error {
+  border: 1px solid rgba(235, 87, 87, 0.4);
+  background: rgba(235, 87, 87, 0.08);
+  color: var(--negative);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+}
+
+.footer {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.footer p {
+  margin: 0;
+}
+
+.footer code {
+  color: var(--text);
+}
+
+/* --- Design foundation (step 3): the board is scoped to --mono above so it
+   renders identically; everything outside .shell uses --sans. --- */
+.shell {
+  font-family: var(--mono);
+}
+
+/* Liquid glass. .glass is the glass-2 recipe; tiers only change the blur. */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+}
+.glass-1 {
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+}
+.glass-3 {
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass, .glass-1, .glass-2, .glass-3 {
+    background: var(--surface);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .glass-1, .glass-2, .glass-3 {
+    background: var(--surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* Ambient mesh the glass refracts. Fixed, behind everything, slow drift only. */
+.ambient {
+  position: fixed;
+  inset: -12%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 48% at 22% 16%, var(--ambient-a), transparent 70%),
+    radial-gradient(52% 46% at 82% 82%, var(--ambient-b), transparent 72%),
+    var(--bg);
+  animation: rvue-ambient-drift 64s ease-in-out infinite alternate;
+}
+.ambient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@keyframes rvue-ambient-drift {
+  from { transform: translate3d(-1.2%, -0.8%, 0) scale(1.02); }
+  to { transform: translate3d(1.2%, 0.8%, 0) scale(1.05); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambient { animation: none; }
+}
+
+/* Theme toggle: two-state, visible label (not icon-only). */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

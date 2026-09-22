@@ -1,0 +1,31 @@
+{
+  "name": "bitget-rvue",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bitget rVue - AI research desk for tokenized U.S. stocks (rTokens)",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "smoke": "tsx scripts/smoke.ts",
+    "smoke:research": "tsx scripts/research-smoke.ts",
+    "check:model": "tsx scripts/check-model.ts"
+  },
+  "dependencies": {
+    "lucide-react": "^1.43.0",
+    "next": "^16.3.4",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "undici": "^8.10.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^22.20.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
+}
