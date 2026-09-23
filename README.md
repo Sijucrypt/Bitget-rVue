@@ -34,7 +34,7 @@ The Language Model acts exclusively as the **Signal Reasoner and Summarizer**, s
 - **Sub-theme Selection:** Open Theme (Market Anomaly Detection)
 - **Submission Materials:** 
   - Repository: [https://github.com/Sijucrypt/Bitget-rVue](https://github.com/Sijucrypt/Bitget-rVue)
-  - *Note: Add your Vercel Live Demo Link and Video Link here.*
+
 
 ---
 
@@ -62,7 +62,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the application.
+Open [bitget-rvue.vercel.app](https://bitget-rvue.vercel.app/) to view the application.
 
 ## Tech Stack
 - **Frontend:** Next.js (App Router), Tailwind CSS v4, Lucide React
