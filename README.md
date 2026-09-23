@@ -1,40 +1,48 @@
-# Bitget rVue
+# Bitget rVue: 24/7 Tokenized Market Intelligence Terminal
 
-**Bitget rVue** is an AI-powered terminal designed to capture the structural dislocation between 24/7 global crypto markets and traditional equity market hours. When Wall Street closes, tokenized stocks (rTokens) continue to trade continuously on Bitget. rVue identifies, explains, and evaluates these after-hours pricing divergences.
+## 1. Project Description
 
-## What it is
+### Core Hypothesis & Thesis
+Traditional equity markets are constrained by an antiquated paradigm: they shut down every evening, weekend, and holiday. However, global crypto traders continue buying and selling tokenized stocks (rTokens) on Bitget 24/7. **Our thesis is that a structural dislocation exists between the frozen "official" stock price and the live tokenized price during off-hours.** When weekend geopolitical shocks, unseasonal earnings announcements, or macro events occur, rTokens react immediately. Because conventional trading terminals cannot natively map traditional session closes to continuous 24/7 crypto curves, traders miss these pricing anomalies. Bitget rVue bridges this gap by aligning the curves and identifying material divergence spreads in real-time.
 
-Traditional equity markets shut down every evening, weekend, and holiday. Meanwhile, tokenized assets react to weekend geopolitical shocks, earnings announcements, and macro events immediately. This creates a significant structural divergence: the "official" price is frozen, but the live tokenized price is moving.
+### Target User
+- **Crypto-native arbitrageurs and momentum traders** looking to capture alpha on tokenized equities during weekends and market closures.
+- **Traditional finance (TradFi) analysts** seeking a live "synthetic pre-market" indicator of how a stock will open on Monday based on weekend crypto trading activity.
+- **DeFi researchers** who require automated, evidence-backed intelligence that synthesizes off-hours price moves with corresponding news and on-chain capital flows.
 
-**Bitget rVue** serves as the intelligence layer for these moments. It scans the entire Bitget rToken universe against Yahoo Finance underlying quotes to find material spread dislocations, then uses Bitget’s Qwen AI to investigate the cause—enforcing strict anti-hallucination protocols so the AI relies exclusively on verifiable on-chain data and recent news.
+### Product Value
+Bitget rVue provides an automated intelligence layer that monitors the top 150 most liquid rTokens on Bitget. It eliminates the manual friction of comparing a frozen Nasdaq quote to a live Bitget orderbook. When an anomaly is detected (e.g., rTSLA is trading +2.5% higher than TSLA's Friday close), rVue instantly compiles on-chain holder data, transfer velocities, and 48-hour news flows, delivering an AI-generated, hallucination-free research brief explaining *why* the spread exists.
 
-## How it works
+---
 
-The system operates in a strict, two-tier architecture:
+## 2. Role of the LLM in the Project
 
-1. **Deterministic Scanning (Tier 1):** 
-   - rVue continuously scans the top 150 most liquid rTokens on Bitget.
-   - It aligns the 24h rolling crypto window with the underlying asset's *previous official close*, preventing time-window distortions.
-   - It calculates the exact divergence spread (e.g., `rTSLA` vs `TSLA`).
-   - Divergences exceeding strict thresholds (±0.75pp for equities, ±0.50pp for ETFs) are automatically flagged.
+The Language Model acts exclusively as the **Signal Reasoner and Summarizer**, strictly bounded by a deterministic evidence pipeline.
 
-2. **AI-Driven Interpretation (Tier 2):**
-   - When a trader investigates a flagged asset, the backend builds an **Evidence Package**. This package contains raw on-chain metrics (via Blockscout), news flow (last 48 hours), and precise market quotes.
-   - This package is fed to **Bitget's Qwen AI** model with a rigid, non-negotiable prompt: *The AI must interpret the provided numbers, never invent them.*
-   - Before the AI's response reaches the user, rVue's backend validates that every citation resolves to a real evidence ID and every number in the text matches the source data.
+- **Specific Model Used:** Bitget's Qwen API (`qwen3.8-max`).
+- **Utilization Breakdown:**
+  1. **Signal Reasoning:** When a trader queries a diverging asset, rVue's backend programmatically fetches hard data (Bitget orderbook, Blockscout on-chain transfers, Yahoo Finance quotes, Google/Yahoo News). 
+  2. **Hallucination Prevention (The Evidence Package):** The LLM is fed a structured JSON `EvidencePackage`. It is strictly instructed *never* to invent numbers, scrape the web, or infer pricing. It must simply interpret the provided data packet.
+  3. **Output Formatting:** The LLM streams a structured JSON brief (Summary, What Changed, Why It Matters, Risks, Key Signals) back to the UI.
+  4. **Post-Generation Audit:** Our custom backend deterministic engine parses the LLM's output. It verifies that every citation resolves to a real Evidence ID and audits all numbers to ensure the LLM hasn't hallucinated a price or threshold.
 
-## Key Features
+---
 
-- **Live Divergence Board:** Telemetry tracking the highest-volume rTokens, surfacing real-time spreads against off-hours stock prices.
-- **Evidence-Backed AI Chat:** Ask Qwen why an asset is moving. The AI's conclusions are deeply cited, and if it attempts to hallucinate data, the system explicitly warns the user.
-- **Liquid Glass Interface:** A performant, ambient Next.js frontend built with tokenized theming (Dark & Light modes) that focuses entirely on data clarity. 
+## 3. Submission Details
 
-## Getting Started
+- **Track Selection:** AI Trading Desk
+- **Sub-theme Selection:** Open Theme (Market Anomaly Detection)
+- **Submission Materials:** 
+  - Repository: [https://github.com/Sijucrypt/Bitget-rVue](https://github.com/Sijucrypt/Bitget-rVue)
+  - *Note: Add your Vercel Live Demo Link and Video Link here.*
+
+---
+
+## 4. Getting Started / Local Development
 
 ### Prerequisites
 - Node.js (v18+)
 - A Bitget Qwen API key
-- (Optional) Local DoH setup if your ISP blocks exchange API resolution.
 
 ### Installation
 
