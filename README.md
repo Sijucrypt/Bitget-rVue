@@ -1,69 +1,63 @@
-# Bitget rVue - rToken Research Desk
+# Bitget rVue
 
-AI research desk for tokenized U.S. stocks (rTokens) on Bitget.
-Core question: "What's happening with this rToken right now, and does it agree with the underlying stock?"
+**Bitget rVue** is an AI-powered terminal designed to capture the structural dislocation between 24/7 global crypto markets and traditional equity market hours. When Wall Street closes, tokenized stocks (rTokens) continue to trade continuously on Bitget. rVue identifies, explains, and evaluates these after-hours pricing divergences.
 
-Principle: **code calculates, AI interprets.** All numbers are deterministic TypeScript; the AI layer (Qwen) only reasons over a structured Evidence Package and never does math.
+## What it is
 
-## Scope (Two Tiers)
+Traditional equity markets shut down every evening, weekend, and holiday. Meanwhile, tokenized assets react to weekend geopolitical shocks, earnings announcements, and macro events immediately. This creates a significant structural divergence: the "official" price is frozen, but the live tokenized price is moving.
 
-1. **Tier 1 - Market-wide divergence scanner (deterministic, no LLM).** Compares every live rToken (~705 rXXX/USDT spot pairs) against its native U.S. underlying, anchored to the previous official close.
-2. **Tier 2 - Deep research brief (per asset).** Evidence Package (market + on-chain + news) synthesized by Qwen into a sourced research brief with FACT / COMPUTED / INTERPRETATION / UNKNOWN discipline.
+**Bitget rVue** serves as the intelligence layer for these moments. It scans the entire Bitget rToken universe against Yahoo Finance underlying quotes to find material spread dislocations, then uses Bitget’s Qwen AI to investigate the cause—enforcing strict anti-hallucination protocols so the AI relies exclusively on verifiable on-chain data and recent news.
 
-## Surfaces
+## How it works
 
-| Surface | Route | State |
-|---------|-------|-------|
-| Landing page (liquid glass) | `/` | Complete |
-| AI chat desk | `/chat`, `/chat/[id]` | Complete |
-| rToken board (list of all rTokens) | `/rtokens` | Complete |
-| rToken report (per asset, Tier 2) | `/rtokens/[rToken]` | Complete |
-| Privacy | `/privacy` | Complete |
+The system operates in a strict, two-tier architecture:
 
-Both a **light** and a **dark** theme are supported, switched without a flash of the wrong theme. Glass is used for chrome (sidebar, topbar, composer, palette); data tables and evidence blocks stay opaque so numbers remain legible.
+1. **Deterministic Scanning (Tier 1):** 
+   - rVue continuously scans the top 150 most liquid rTokens on Bitget.
+   - It aligns the 24h rolling crypto window with the underlying asset's *previous official close*, preventing time-window distortions.
+   - It calculates the exact divergence spread (e.g., `rTSLA` vs `TSLA`).
+   - Divergences exceeding strict thresholds (±0.75pp for equities, ±0.50pp for ETFs) are automatically flagged.
 
-## Quickstart & Deployment
+2. **AI-Driven Interpretation (Tier 2):**
+   - When a trader investigates a flagged asset, the backend builds an **Evidence Package**. This package contains raw on-chain metrics (via Blockscout), news flow (last 48 hours), and precise market quotes.
+   - This package is fed to **Bitget's Qwen AI** model with a rigid, non-negotiable prompt: *The AI must interpret the provided numbers, never invent them.*
+   - Before the AI's response reaches the user, rVue's backend validates that every citation resolves to a real evidence ID and every number in the text matches the source data.
 
-### Local Development
+## Key Features
+
+- **Live Divergence Board:** Telemetry tracking the highest-volume rTokens, surfacing real-time spreads against off-hours stock prices.
+- **Evidence-Backed AI Chat:** Ask Qwen why an asset is moving. The AI's conclusions are deeply cited, and if it attempts to hallucinate data, the system explicitly warns the user.
+- **Liquid Glass Interface:** A performant, ambient Next.js frontend built with tokenized theming (Dark & Light modes) that focuses entirely on data clarity. 
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v18+)
+- A Bitget Qwen API key
+- (Optional) Local DoH setup if your ISP blocks exchange API resolution.
+
+### Installation
+
 ```bash
+# Clone the repository
+git clone https://github.com/Sijucrypt/Bitget-rVue.git
+cd Bitget-rVue
+
+# Install dependencies
 npm install
-copy .env.example .env     # add QWEN_API_KEY for research briefs; all other vars are optional
-npm run dev                # http://localhost:3000
-npm run smoke              # Tier-1: live scanner test (Bitget + Yahoo)
-npm run smoke:research -- rTSLA               # Tier-2: Evidence Package for one asset
+
+# Configure environment variables
+cp .env.example .env
+# Add your QWEN_API_KEY to the .env file
+
+# Run the development server
+npm run dev
 ```
 
-### Vercel Deployment
-This Next.js App Router project is 100% ready for Vercel. 
-1. Import the repository into Vercel.
-2. Set the following Environment Variables in the Vercel dashboard:
-   - `QWEN_API_KEY` = your API key
-   - `QWEN_BASE_URL` = `https://hackathon.bitgetops.com/v1`
-   - `QWEN_MODEL` = `qwen3.8-max`
-3. Click Deploy. Vercel will automatically run `npm run build`.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-*(Note: Without a model key, the research endpoint gracefully degrades, returning `503 model_not_configured` and the full deterministic Evidence Package. It will never invent or mock a brief).*
-
-## Data Sources & Architecture
-
-- **Bitget public API v2** (no key): spot symbols, tickers, coins, contract addresses, and chains.
-- **Yahoo Finance v8 chart API** (no key): underlying price, previous close, trading periods.
-- **Blockscout v2 on ArbitrumOne** (no key): token holders, total supply, transfer history.
-- **Google News RSS + Yahoo Finance RSS** (no key): 48h news for the underlying and the rToken.
-- **Qwen (Bitget hackathon endpoint)**: Tier-2 synthesis and Chat Streaming.
-
-### Network Proxy Bypass
-All outbound HTTP requests resolve through a custom DNS-over-HTTPS (`lib/net/doh.ts`) implementation and a Next.js proxy route (`app/api/bitget-proxy/[...path]/route.ts`) to seamlessly bypass local DNS blocks targeting exchange, crypto, and block explorer domains.
-
-## Docs (Included in repo)
-
-| Doc | Role |
-|-----|------|
-| `AGENTS.md` | Working rules for AI sessions; start here |
-| `Bitget_rVue_AI_Trading_Desk_Build_Plan.md` | Why - product intent, scope, evidence discipline |
-| `Bitget_rVue_Frontend_Spec.md` | What the UI is - routes, shell, themes, glass, contracts, build order |
-| `ui-design-skill.md` | How it looks - tokens, material, components, motion |
-| `WEB_DESIGN_RULES.md` | Quality control checklist |
-| `Bitget_rVue_SDLC.md` | How we work - phases, gates, definition of done, phase tracker |
-
-*Built for the Bitget AI Hackathon S2 (AI Trading Desk / Information Extraction & Signal Generation track).*
+## Tech Stack
+- **Frontend:** Next.js (App Router), Tailwind CSS v4, Lucide React
+- **Backend:** Node.js, Vercel Serverless Functions
+- **AI/LLM:** Bitget Qwen API (`qwen3.8-max`)
+- **Market Data:** Bitget API, Yahoo Finance, Blockscout (Arbitrum/Morph)
