@@ -20,3 +20,10 @@ next-env.d.ts
 
 # installers
 *.msi
+
+# demo recording output (large video/screenshots)
+demo-recording/
+
+# auto-generated agent files
+AGENTS.md
+CLAUDE.md
